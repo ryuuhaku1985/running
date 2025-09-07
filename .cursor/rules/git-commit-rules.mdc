@@ -1,0 +1,125 @@
+# Git 提交规范和注释规则
+
+## 提交规范
+
+### 提交命令
+使用 `git ci` 替代 `git commit`，这将启动交互式提交过程。
+
+### 提交类型选择
+提交时需要选择以下类型之一：
+1. feat: 新功能（Introducing new features）
+2. fix: 修补bug（Fixing a bug）
+3. docs: 文档（Writing docs）
+4. style: 格式，但不包括css文件（Improving structure/format of the code）
+5. refactor: 重构（Refactoring code）
+6. test: 增加测试（Adding tests）
+7. chore: 构建过程或辅助工具的变动（Changing configuration files）
+8. perf: 改善性能（Improving performance）
+
+### 提交信息格式
+每次提交需要填写：
+1. 影响范围：填写模块名，可选
+2. 简短描述：必填，不超过50个字符，结尾不加标点
+3. 完整描述：可选，可多行
+4. 相关问题：可选，使用 refs 或 close 关键字
+
+## 代码注释规范
+
+### 文件头部注释
+```javascript
+/**
+ * @file 文件名
+ * @description 文件描述
+ * @author 作者名 <邮箱>
+ * @createDate 创建日期
+ * @lastModifiedDate 最后修改日期
+ * @lastModifiedBy 最后修改人
+ */
+```
+
+### 函数注释
+```javascript
+/**
+ * 函数描述
+ * @param {参数类型} 参数名 参数描述
+ * @returns {返回类型} 返回值描述
+ * @example
+ * // 使用示例
+ * functionName(param)
+ */
+```
+
+### 类注释
+```javascript
+/**
+ * 类描述
+ * @class 类名
+ * @classdesc 类的详细描述
+ */
+```
+
+### 变量和常量注释
+```javascript
+/** @const {类型} 常量描述 */
+const CONSTANT_NAME = value;
+
+/** @type {类型} 变量描述 */
+let variableName = value;
+```
+
+### 代码块注释
+```javascript
+// FIXME: 标记需要修复的问题
+// TODO: 标记待完成的功能
+// NOTE: 添加重要说明
+// WARNING: 警告信息
+```
+
+## 最佳实践
+
+### 提交建议
+1. 每次提交只做一件事，保持提交的原子性
+2. 提交前先使用 `git status` 检查变更
+3. 提交信息要清晰描述本次改动的内容
+4. 避免在提交信息中使用中文标点符号
+
+### 注释建议
+1. 注释要简洁明了，避免冗余
+2. 代码即文档，优先通过代码本身表达意图
+3. 及时更新注释，确保注释与代码同步
+4. 对复杂的业务逻辑必须添加注释
+5. 对公共组件和工具函数必须添加注释和示例
+
+## 示例
+
+### 好的提交示例
+```bash
+# 选择类型：1 (feat)
+# 影响范围：auth
+# 简短描述：add user authentication module
+# 完整描述：
+Implement user authentication with JWT
+- Add login endpoint
+- Add token validation
+- Add user session management
+# 相关问题：close #123
+```
+
+### 好的注释示例
+```javascript
+/**
+ * 用户认证模块
+ * @module UserAuth
+ * @description 处理用户登录、注册和认证相关功能
+ */
+
+/**
+ * 验证用户登录状态
+ * @param {string} token - JWT token
+ * @returns {Promise<boolean>} 验证结果
+ * @throws {AuthError} 当token无效时抛出
+ */
+async function validateUserToken(token) {
+  // 实现代码
+}
+```

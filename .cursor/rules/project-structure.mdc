@@ -1,0 +1,30 @@
+---
+alwaysApply: true
+---
+
+# 小红书内容生成器项目结构
+
+这是一个小红书内容生成器项目，包含前端界面、后端代理服务器和AI图片生成功能。
+
+## 核心文件
+
+- [index.html](mdc:index.html) - 主页面，包含完整的用户界面
+- [script.js](mdc:script.js) - 前端JavaScript逻辑，包含XiaohongshuGenerator类
+- [style.css](mdc:style.css) - 样式文件，包含响应式设计和动画效果
+- [proxy-server.js](mdc:proxy-server.js) - Node.js代理服务器，解决CORS问题
+- [package.json](mdc:package.json) - 项目配置和依赖管理
+
+## 主要功能模块
+
+1. **JSON解析和内容展示** - 解析小红书内容JSON数据
+2. **提示词管理** - 中英文提示词切换和复制功能
+3. **AI图片生成** - 集成ModelScope Qwen-Image API
+4. **用户界面** - 响应式设计，智能输入区域收回功能
+5. **API配置** - ModelScope API Key管理
+
+## 架构说明
+
+- 前端使用原生JavaScript，无框架依赖
+- 后端使用Express作为代理服务器
+- 通过本地代理解决浏览器CORS限制
+- API Key存储在浏览器LocalStorage中

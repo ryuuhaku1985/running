@@ -1,0 +1,44 @@
+---
+description: ModelScope API配置和错误处理
+---
+
+# ModelScope API配置指南
+
+## API Key获取
+
+1. 访问 [ModelScope官网](https://modelscope.cn/)
+2. 注册/登录账号并完成实名认证
+3. 阅读官方文档：[API Token管理](https://www.modelscope.cn/docs/accounts/token)
+4. 进入 [控制台 -> API管理](https://modelscope.cn/my/myaccesstoken)
+5. 创建新的API Key
+6. 复制完整的API Key
+7. 确保API Key有Qwen/Qwen-Image模型的使用权限
+
+## 常见错误处理
+
+### InvalidApiKey错误
+```json
+{
+    "code": "InvalidApiKey",
+    "message": "Invalid API-key provided.",
+    "request_id": "027da96f-6843-494d-867a-65ee0b1409e8"
+}
+```
+
+**解决方案：**
+1. 检查API Key是否从ModelScope控制台完整复制
+2. 确认API Key未过期
+3. 验证账户是否有足够额度
+4. 确保API Key有Qwen/Qwen-Image模型的使用权限
+5. 检查账户是否已完成实名认证
+6. 确认API Key权限范围包含图片生成服务
+
+## API配置位置
+
+- 前端配置：页面顶部"显示配置"按钮
+- 存储位置：浏览器LocalStorage
+- 配置文件：无需配置文件，直接在界面操作
+
+## 测试连接
+
+使用"测试连接"按钮验证API Key有效性，成功后显示"API连接成功！"

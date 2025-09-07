@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小红书内容生成器 | AI创作工具</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 移除Google Fonts依赖，使用系统字体 -->
+</head>
+<body>
+    <!-- 背景动画 -->
+    <div class="background-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">🎨</span>
+                <span class="brand-text">小红书创作助手</span>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-item active" data-page="input">
+                    <span class="nav-icon">📝</span>
+                    <span>数据输入</span>
+                </button>
+                <button class="nav-item" data-page="results">
+                    <span class="nav-icon">📋</span>
+                    <span>解析结果</span>
+                </button>
+                <button class="nav-item" data-page="gallery">
+                    <span class="nav-icon">🖼️</span>
+                    <span>图片画廊</span>
+                </button>
+                <button class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>设置</span>
+                </button>
+            </div>
+            <div class="nav-status">
+                <div class="api-status-indicator" id="apiStatusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">未配置</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <main class="app-container">
+        
+        <!-- 数据输入页面 -->
+        <div class="page active" id="inputPage">
+            <div class="page-hero">
+                <h1 class="hero-title">
+                    <span class="gradient-text">AI驱动的内容创作</span>
+                    <br>让创意无限可能
+                </h1>
+                <p class="hero-subtitle">
+                    输入JSON数据，一键生成小红书内容和精美海报
+                </p>
+            </div>
+            
+            <div class="input-card">
+                <div class="card-header">
+                    <h3>📄 JSON数据输入</h3>
+                    <div class="quick-actions">
+                        <button class="btn-ghost" id="loadExampleBtn">
+                            <span>📋</span>
+                            加载示例
+                        </button>
+                        <button class="btn-ghost" id="clearBtn">
+                            <span>🗑️</span>
+                            清空
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="input-area">
+                    <textarea 
+                        id="jsonInput" 
+                        placeholder="请粘贴您的JSON数据...&#10;&#10;提示：您可以点击"加载示例"查看数据格式"
+                        spellcheck="false"
+                    ></textarea>
+                    <div class="input-footer">
+                        <div class="input-info">
+                            <span id="charCount">0</span> 字符
+                        </div>
+                        <button class="btn-primary parse-btn" id="parseBtn">
+                            <span class="btn-icon">🚀</span>
+                            <span class="btn-text">解析数据</span>
+                            <div class="btn-shine"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解析结果页面 -->
+        <div class="page" id="resultsPage">
+            <div class="page-header">
+                <h2 class="page-title">📋 解析结果</h2>
+                <button class="btn-secondary" id="backToInputBtn">
+                    <span>←</span>
+                    返回输入
+                </button>
+            </div>
+            <div class="results-container" id="resultsContainer">
+                <!-- 结果内容将动态插入这里 -->
+            </div>
+        </div>
+
+        <!-- 图片编辑中心 -->
+        <div class="page" id="galleryPage">
+            <div class="page-header">
+                <h2 class="page-title">🖼️ 图片编辑中心</h2>
+                <div class="gallery-controls">
+                    <button class="btn-ghost" id="uploadImageBtn">
+                        <span>📤</span>
+                        上传图片
+                    </button>
+                    <button class="btn-ghost" id="clearGalleryBtn">
+                        <span>🗑️</span>
+                        清空画廊
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 图片上传区域 -->
+            <div class="upload-section" id="galleryUploadSection" style="display: none;">
+                <div class="upload-area-compact" id="galleryUploadArea">
+                    <input type="file" id="galleryImageUpload" accept="image/*" style="display: none;">
+                    <div class="upload-content-compact">
+                        <span class="upload-icon-small">📁</span>
+                        <span>点击或拖拽图片到此处</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 图片编辑工作区 -->
+            <div class="image-workspace" id="imageWorkspace" style="display: none;">
+                <div class="workspace-left">
+                    <div class="current-image-container">
+                        <img id="workspaceImage" class="workspace-image" />
+                        <canvas id="workspaceCanvas" class="workspace-canvas" style="display: none;"></canvas>
+                    </div>
+                </div>
+                <div class="workspace-right">
+                    <div class="compact-editor">
+                        <h4>✏️ 文字编辑</h4>
+                        <div class="editor-row">
+                            <textarea class="text-input-compact" placeholder="输入文字..."></textarea>
+                        </div>
+                        <div class="editor-row">
+                            <select class="font-select-compact">
+                                <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
+                                <option value="'SimHei', sans-serif">黑体</option>
+                                <option value="'SimSun', serif">宋体</option>
+                                <option value="'Arial Black', sans-serif">Arial Black</option>
+                                <option value="'Impact', sans-serif">Impact</option>
+                            </select>
+                            <input type="range" class="size-slider-compact" min="20" max="100" value="40" />
+                            <span class="size-display-compact">40px</span>
+                        </div>
+                        <div class="editor-row">
+                            <input type="color" class="color-input-compact" value="#ffffff" title="文字颜色" />
+                            <input type="color" class="stroke-color-compact" value="#000000" title="描边颜色" />
+                            <input type="range" class="stroke-width-compact" min="0" max="8" value="2" title="描边粗细" />
+                        </div>
+                        <div class="position-grid-compact">
+                            <button class="pos-btn" data-pos="top-left">↖</button>
+                            <button class="pos-btn" data-pos="top-center">↑</button>
+                            <button class="pos-btn" data-pos="top-right">↗</button>
+                            <button class="pos-btn" data-pos="center-left">←</button>
+                            <button class="pos-btn active" data-pos="center">●</button>
+                            <button class="pos-btn" data-pos="center-right">→</button>
+                            <button class="pos-btn" data-pos="bottom-left">↙</button>
+                            <button class="pos-btn" data-pos="bottom-center">↓</button>
+                            <button class="pos-btn" data-pos="bottom-right">↘</button>
+                        </div>
+                        <div class="editor-actions">
+                            <button class="btn-compact btn-primary" id="previewTextCompact">预览</button>
+                            <button class="btn-compact btn-success" id="downloadImageCompact">下载</button>
+                            <button class="btn-compact btn-secondary" id="saveToGalleryCompact">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 图片列表 -->
+            <div class="gallery-container" id="galleryContainer">
+                <div class="gallery-empty">
+                    <div class="empty-icon">🎨</div>
+                    <h3>暂无图片</h3>
+                    <p>上传图片或生成AI图片开始编辑吧！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设置页面 -->
+        <div class="page" id="settingsPage">
+            <div class="page-header">
+                <h2 class="page-title">⚙️ 应用设置</h2>
+            </div>
+            
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3>🔑 API配置</h3>
+                    <div class="setting-item">
+                        <label for="apiKeyInput">ModelScope API Key</label>
+                        <div class="input-group">
+                            <input 
+                                type="password" 
+                                id="apiKeyInput" 
+                                placeholder="请输入您的ModelScope API Key"
+                                autocomplete="off"
+                            />
+                            <button id="togglePasswordBtn" class="toggle-btn">
+                                <span>👁️</span>
+                            </button>
+                        </div>
+                        <div class="setting-description">
+                            用于生成AI图片，获取方式：
+                            <a href="https://www.modelscope.cn/my/myaccesstoken" target="_blank">ModelScope控制台</a>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button class="btn-secondary" id="testApiBtn">
+                            <span>🔗</span>
+                            测试连接
+                        </button>
+                        <button class="btn-primary" id="saveConfigBtn">
+                            <span>💾</span>
+                            保存配置
+                        </button>
+                        <button class="btn-danger" id="clearApiBtn">
+                            <span>🗑️</span>
+                            清除配置
+                        </button>
+                    </div>
+                    
+                    <div id="apiStatus" class="api-status"></div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>🎨 图片设置</h3>
+                    <div class="setting-item">
+                        <label>图片尺寸</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="imageSize" value="1080x1440" checked>
+                                <span class="radio-custom"></span>
+                                <span>小红书标准 (3:4)</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="imageSize" value="1024x1024">
+                                <span class="radio-custom"></span>
+                                <span>正方形 (1:1)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="settings-section">
+                    <h3>🌙 外观设置</h3>
+                    <div class="setting-item">
+                        <label>主题模式</label>
+                        <div class="theme-toggle">
+                            <button class="theme-btn active" data-theme="light">
+                                <span>☀️</span>
+                                浅色
+                            </button>
+                            <button class="theme-btn" data-theme="dark">
+                                <span>🌙</span>
+                                深色
+                            </button>
+                            <button class="theme-btn" data-theme="auto">
+                                <span>🔄</span>
+                                自动
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 全局提示 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- 加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-text">处理中...</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

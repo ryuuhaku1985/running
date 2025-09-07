@@ -1,0 +1,76 @@
+---
+description: 常见问题排查和解决方案
+---
+
+# 故障排查指南
+
+## API相关问题
+
+### InvalidApiKey错误
+**错误信息：**
+```json
+{
+    "code": "InvalidApiKey", 
+    "message": "Invalid API-key provided."
+}
+```
+
+**解决步骤：**
+1. 检查API Key格式是否正确（通常以`sk-`开头）
+2. 确认从ModelScope控制台复制的完整Key
+3. 验证账户状态和剩余额度
+4. 重新生成新的API Key
+
+### CORS错误
+**错误信息：**
+```
+Access to fetch at 'https://dashscope.aliyuncs.com/...' has been blocked by CORS policy
+```
+
+**解决方案：**
+1. 确保代理服务器正在运行：`npm start`
+2. 访问 `http://localhost:3001/index.html`（不是file://协议）
+3. 检查代理服务器日志是否有错误
+
+## 服务器问题
+
+### 代理服务器无法启动
+**可能原因：**
+- 端口3001被占用
+- 依赖包未安装
+
+**解决步骤：**
+```bash
+# 检查端口占用
+lsof -i :3001
+
+# 重新安装依赖
+npm install
+
+# 使用其他端口
+PORT=3002 npm start
+```
+
+### 图片生成超时
+**原因：**
+- 网络连接问题
+- API服务繁忙
+- 提示词过于复杂
+
+**解决方案：**
+1. 检查网络连接
+2. 简化提示词内容
+3. 稍后重试
+4. 检查API额度是否充足
+
+## 前端问题
+
+### 页面无法加载
+1. 确保通过 `http://localhost:3001` 访问
+2. 检查浏览器控制台错误信息
+3. 清除浏览器缓存
+
+### API Key无法保存
+1. 检查浏览器是否支持LocalStorage
+2. 确认不在隐私/无痕模式下
+3. 检查浏览器安全设置

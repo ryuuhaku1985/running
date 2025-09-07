@@ -1,0 +1,48 @@
+---
+globs: *.js,*.html,*.css
+---
+
+# 前端架构规范
+
+## JavaScript代码规范
+
+### 类结构
+- 使用ES6 Class语法
+- 主要类：`XiaohongshuGenerator`
+- 构造函数中初始化所有元素和事件
+
+### 方法命名规范
+- `initializeElements()` - 初始化DOM元素
+- `bindEvents()` - 绑定事件监听器
+- `display*()` - 显示相关方法
+- `hide*()` - 隐藏相关方法
+- `show*()` - 显示状态方法
+
+### API调用规范
+- 所有API调用通过代理服务器 `http://localhost:3001`
+- 错误处理必须包含用户友好的提示
+- 异步操作使用async/await语法
+
+## CSS规范
+
+### 响应式设计
+- 移动端优先：`@media (max-width: 768px)`
+- 桌面端适配：`@media (min-width: 1024px)`
+- 使用CSS Grid和Flexbox布局
+
+### 动画规范
+- 使用`transition: all 0.3s ease`
+- 悬停效果：`transform: translateY(-2px)`
+- 数字动画使用`requestAnimationFrame`
+
+## HTML结构
+
+### 语义化标签
+- 使用`<section>`包装功能区域
+- 按钮使用`<button>`标签
+- 表单元素正确使用`<label>`
+
+### ID和Class命名
+- ID：驼峰命名，如`jsonInput`
+- Class：短横线命名，如`prompt-item`
+- 功能性class：`btn-primary`、`error-message`
